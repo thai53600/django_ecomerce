@@ -1,18 +1,17 @@
 from . import models
 from rest_framework import serializers
-from rest_framework.fields import CharField, DateTimeField
+from rest_framework.fields import CharField, DateTimeField, IntegerField
 
 
 class CategorySerializer(serializers.ModelSerializer):
-
-    id = serializers.IntegerField()
-    name = CharField(source="name", required=True)
-    slug = CharField(source="slug", required=True)
-    icon_url = CharField(source="icon_url", required=False)
-    created_at = DateTimeField(source="created_at", required=True)
-    updated_at = DateTimeField(source="updated_at", required=True)
-    deleted_at = DateTimeField(source="deleted_at", required=False)
-
+    id = IntegerField(required=False)
+    name = CharField(required=True)
+    slug = CharField(required=True)
+    icon_url = CharField(required=True)
+    created_at = DateTimeField(required=False)
+    updated_at = DateTimeField(required=False)
+    deleted_at = DateTimeField(required=False)
+    
     class Meta:
         model = models.Category
         fields = (
