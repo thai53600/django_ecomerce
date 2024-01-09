@@ -3,7 +3,7 @@ from django.http import Http404
 from .serializers import CategorySerializer, ProductSerializer, ProductImageSerializer, ProductCommentSerializer
 from django.contrib.auth.models import User
 from .models import Category, Product, ProductImage, ProductComment
-from .helpers import custom_response, parse_request
+from backend_ecommerce.helpers import custom_response, parse_request
 
 
 # Create your views here.
