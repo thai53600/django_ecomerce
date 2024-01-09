@@ -34,27 +34,36 @@ class Product(models.Model):
             models.Index(fields=['created_at'])
         ]
 
-    def __str__(self):
-        return self.id
-
 
 class ProductImage(models.Model):
     id = models.AutoField(primary_key=True)
     image_url = models.CharField(max_length=128)
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images', null=False)
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images', null=False)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True)
+    
+    class Meta:
+        ordering = ['created_at']
+        indexes = [
+            models.Index(fields=['created_at'])
+        ]
 
 
 class ProductComment(models.Model):
     id = models.AutoField(primary_key=True)
-    rating = models.IntegerField()
+    rating = models.IntegerField(null=True)
     comment = models.CharField(max_length=512)
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_comments', null=False)
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments', null=False)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     parent_id = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['-created_at'])
+        ]
 

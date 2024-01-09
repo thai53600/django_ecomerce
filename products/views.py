@@ -1,9 +1,8 @@
-from rest_framework import views, status
-from rest_framework.parsers import JSONParser
-from rest_framework.response import Response
+from rest_framework import views
 from django.http import Http404
-from .serializers import CategorySerializer, ProductSerializer
-from .models import Category, Product
+from .serializers import CategorySerializer, ProductSerializer, ProductImageSerializer, ProductCommentSerializer
+from django.contrib.auth.models import User
+from .models import Category, Product, ProductImage, ProductComment
 from .helpers import custom_response, parse_request
 
 
@@ -71,7 +70,9 @@ class ProductViewAPI(views.APIView):
     def get(self, request):
         try:
             products = Product.objects.all()
+            print(products)
             serializers = ProductSerializer(products, many=True)
+            print('serializers.data', serializers.data)
             return custom_response('Get all products successfully!', 'Success', serializers.data, 200)
         except:
             return custom_response('Get all products failed!', 'Error', None, 400)
@@ -132,3 +133,133 @@ class ProductDetailAPIView(views.APIView):
             return custom_response('Delete product successfully!', 'Success', { "product_id": id_slug }, 204)
         except:
             return custom_response('Delete product failed!', 'Error', "Product not found!", 400)
+        
+
+class ProductImageAPIView(views.APIView):
+    
+    def get(self, request, product_id_slug):
+        try:
+            print('product_id_slug', product_id_slug)
+            product_images = ProductImage.objects.filter(product_id=product_id_slug).all()
+            print('product_images', product_images)
+            serializers = ProductImageSerializer(product_images, many=True)
+            return custom_response('Get all product images successfully!', 'Success', serializers.data, 200)
+        except:
+            return custom_response('Get all product images failed!', 'Error', 'Product images not found', 400)
+        
+    def post(self, request, product_id_slug):
+        try:
+            data = parse_request(request)
+            product = Product.objects.get(id=data['product_id'])
+            product_image = ProductImage(
+                product_id=product,
+                image_url=data['image_url']
+            )
+            product_image.save()
+            serializer = ProductImageSerializer(product_image)
+            return custom_response('Create product image successfully!', 'Success', serializer.data, 201)
+        except Exception as e:
+            return custom_response('Create product image failed', 'Error', { "error": str(e) }, 400)
+        
+
+class ProductImageDetailAPIView(views.APIView):
+        
+        def get_object(self, id_slug):
+            try:
+                return ProductImage.objects.get(id=id_slug)
+            except:
+                raise Http404
+            
+        def get(self, request, product_id_slug, id_slug, format=None):
+            try:
+                product_image = self.get_object(id_slug)
+                serializer = ProductImageSerializer(product_image)
+                return custom_response('Get product image successfully!', 'Success', serializer.data, 200)
+            except:
+                return custom_response('Get product image failed!', 'Error', "Product image not found!", 400)
+        
+        def put(self, request, product_id_slug, id_slug):
+            try:
+                data = parse_request(request)
+                product_image = self.get_object(id_slug)
+                serializer = ProductImageSerializer(product_image, data=data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return custom_response('Update product image successfully!', 'Success', serializer.data, 200)
+                else:
+                    return custom_response('Update product image failed', 'Error', serializer.errors, 400)
+            except:
+                return custom_response('Update product image failed', 'Error', "Product image not found!", 400)
+            
+        def delete(self, request, product_id_slug, id_slug):
+            try:
+                product_image = self.get_object(id_slug)
+                product_image.delete()
+                return custom_response('Delete product image successfully!', 'Success', { "product_image_id": id_slug }, 204)
+            except:
+                return custom_response('Delete product image failed!', 'Error', "Product image not found!", 400)
+            
+class ProductCommentAPIView(views.APIView):
+        
+        def get(self, request, product_id_slug):
+            try:
+                product_comments = ProductComment.objects.filter(product_id=product_id_slug).all()
+                serializers = ProductCommentSerializer(product_comments, many=True)
+                return custom_response('Get all product comments successfully!', 'Success', serializers.data, 200)
+            except:
+                return custom_response('Get all product comments failed!', 'Error', None, 400)
+            
+        def post(self, request, product_id_slug):
+            try:
+                data = parse_request(request)
+                product = Product.objects.get(id=data['product_id'])
+                user = User.objects.get(id=data['user_id'])
+                product_comment = ProductComment(
+                    product_id=product,
+                    rating=data['rating'],
+                    comment=data['comment'],
+                    user_id=user,
+                    parent_id=data['parent_id']
+                )
+                product_comment.save()
+                serializer = ProductCommentSerializer(product_comment)
+                return custom_response('Create product comment successfully!', 'Success', serializer.data, 201)
+            except Exception as e:
+                return custom_response('Create product comment failed', 'Error', { "error": str(e) }, 400)
+            
+class ProductCommentDetailAPIView(views.APIView):
+
+    def get_object(self, id_slug):
+        try:
+            return ProductComment.objects.get(id=id_slug)
+        except:
+            raise Http404
+        
+    def get(self, request, product_id_slug, id_slug, format=None):
+        try:
+            product_comment = self.get_object(id_slug)
+            serializer = ProductCommentSerializer(product_comment)
+            return custom_response('Get product comment successfully!', 'Success', serializer.data, 200)
+        except:
+            return custom_response('Get product comment failed!', 'Error', "Product comment not found!", 400)
+    
+    def put(self, request, product_id_slug, id_slug):
+        try:
+            data = parse_request(request)
+            product_comment = self.get_object(id_slug)
+            serializer = ProductCommentSerializer(product_comment, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return custom_response('Update product comment successfully!', 'Success', serializer.data, 200)
+            else:
+                return custom_response('Update product comment failed', 'Error', serializer.errors, 400)
+        except:
+            return custom_response('Update product comment failed', 'Error', "Product comment not found!", 400)
+        
+    def delete(self, request, product_id_slug, id_slug):
+        try:
+            product_comment = self.get_object(id_slug)
+            product_comment.delete()
+            return custom_response('Delete product comment successfully!', 'Success', { "product_comment_id": id_slug }, 204)
+        except:
+            return custom_response('Delete product comment failed!', 'Error', "Product comment not found!", 400)    
