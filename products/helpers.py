@@ -22,5 +22,4 @@ def parse_request(request):
     try:
         return JSONParser().parse(request)
     except JSONDecodeError:
-        print('JSON decoding error!')
         return custom_response('JSON decoding error!', 'Error', None, 400)

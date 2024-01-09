@@ -70,9 +70,7 @@ class ProductViewAPI(views.APIView):
     def get(self, request):
         try:
             products = Product.objects.all()
-            print(products)
             serializers = ProductSerializer(products, many=True)
-            print('serializers.data', serializers.data)
             return custom_response('Get all products successfully!', 'Success', serializers.data, 200)
         except:
             return custom_response('Get all products failed!', 'Error', None, 400)
@@ -139,9 +137,7 @@ class ProductImageAPIView(views.APIView):
     
     def get(self, request, product_id_slug):
         try:
-            print('product_id_slug', product_id_slug)
             product_images = ProductImage.objects.filter(product_id=product_id_slug).all()
-            print('product_images', product_images)
             serializers = ProductImageSerializer(product_images, many=True)
             return custom_response('Get all product images successfully!', 'Success', serializers.data, 200)
         except:
@@ -170,6 +166,12 @@ class ProductImageDetailAPIView(views.APIView):
             except:
                 raise Http404
             
+        def get_object_with_product_id(self, product_id_slug, id_slug):
+            try:
+                return ProductImage.objects.get(product_id=product_id_slug ,id=id_slug)
+            except:
+                raise Http404
+            
         def get(self, request, product_id_slug, id_slug, format=None):
             try:
                 product_image = self.get_object(id_slug)
@@ -181,7 +183,7 @@ class ProductImageDetailAPIView(views.APIView):
         def put(self, request, product_id_slug, id_slug):
             try:
                 data = parse_request(request)
-                product_image = self.get_object(id_slug)
+                product_image = self.get_object_with_product_id(product_id_slug, id_slug)
                 serializer = ProductImageSerializer(product_image, data=data)
                 if serializer.is_valid():
                     serializer.save()
@@ -193,7 +195,7 @@ class ProductImageDetailAPIView(views.APIView):
             
         def delete(self, request, product_id_slug, id_slug):
             try:
-                product_image = self.get_object(id_slug)
+                product_image = self.get_object_with_product_id(product_id_slug, id_slug)
                 product_image.delete()
                 return custom_response('Delete product image successfully!', 'Success', { "product_image_id": id_slug }, 204)
             except:
@@ -235,6 +237,12 @@ class ProductCommentDetailAPIView(views.APIView):
         except:
             raise Http404
         
+    def get_object_with_product_id(self, product_id_slug, id_slug):
+        try:
+            return ProductComment.objects.get(product_id=product_id_slug ,id=id_slug)
+        except:
+            raise Http404
+        
     def get(self, request, product_id_slug, id_slug, format=None):
         try:
             product_comment = self.get_object(id_slug)
@@ -246,7 +254,7 @@ class ProductCommentDetailAPIView(views.APIView):
     def put(self, request, product_id_slug, id_slug):
         try:
             data = parse_request(request)
-            product_comment = self.get_object(id_slug)
+            product_comment = self.get_object_with_product_id(product_id_slug, id_slug)
             serializer = ProductCommentSerializer(product_comment, data=data)
             if serializer.is_valid():
                 serializer.save()
@@ -258,7 +266,7 @@ class ProductCommentDetailAPIView(views.APIView):
         
     def delete(self, request, product_id_slug, id_slug):
         try:
-            product_comment = self.get_object(id_slug)
+            product_comment = self.get_object_with_product_id(product_id_slug, id_slug)
             product_comment.delete()
             return custom_response('Delete product comment successfully!', 'Success', { "product_comment_id": id_slug }, 204)
         except:
