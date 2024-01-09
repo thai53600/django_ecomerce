@@ -1,17 +1,28 @@
 from . import models
 from rest_framework import serializers
-from rest_framework.fields import CharField, DateTimeField, IntegerField
 
 
-class CategorySerializer(serializers.ModelSerializer):
-    id = IntegerField(required=False)
-    name = CharField(required=True)
-    slug = CharField(required=True)
-    icon_url = CharField(required=True)
-    created_at = DateTimeField(required=False)
-    updated_at = DateTimeField(required=False)
-    deleted_at = DateTimeField(required=False)
+class ProductSerializer(serializers.ModelSerializer):
     
+    class Meta:
+        model = models.Product
+        fields = (
+            'id',
+            'name',
+            'unit',
+            'price',
+            'discount',
+            'amount',
+            'is_public',
+            'thumbnail',
+            'category_id',
+            'created_at',
+            'updated_at',
+            'deleted_at'
+        )
+        
+class CategorySerializer(serializers.ModelSerializer):
+    products = ProductSerializer(many=True, read_only=True)
     class Meta:
         model = models.Category
         fields = (
@@ -19,6 +30,7 @@ class CategorySerializer(serializers.ModelSerializer):
             'name',
             'slug',
             'icon_url',
+            'products',
             'created_at',
             'updated_at',
             'deleted_at'

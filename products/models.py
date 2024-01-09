@@ -15,17 +15,13 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    class Unit(models.TextChoices):
-        VND = 'VND', 'Viet Nam Dong'
-        USD = 'USD', 'United States Dollar'
-
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
-    unit = models.CharField(max_length=3, choices=Unit.choices)
+    unit = models.CharField(max_length=3)
     price = models.FloatField()
-    discount = models.IntegerField()
-    amount = models.IntegerField()
-    is_public = models.BooleanField()
+    discount = models.IntegerField(default=0)
+    amount = models.IntegerField(default=0)
+    is_public = models.BooleanField(default=True)
     thumbnail = models.CharField(max_length=128)
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products', null=False)
     created_at = models.DateTimeField(default=timezone.now)
@@ -33,9 +29,9 @@ class Product(models.Model):
     deleted_at = models.DateTimeField(null=True)
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['created_at']
         indexes = [
-            models.Index(fields=['-created_at'])
+            models.Index(fields=['created_at'])
         ]
 
     def __str__(self):
