@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "cloudinary",
     "products",
     "decorations",
-    "cloudinary",
     "upload",
 ]
 
@@ -79,12 +79,12 @@ WSGI_APPLICATION = "backend_ecommerce.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 
 # Password validation
@@ -148,7 +148,7 @@ import cloudinary.api
 from decouple import config
 
 cloudinary.config(
-    cloud_name=config("CLOUDINARY_CLOUD_NAME"),
-    api_key=config("CLOUDINARY_API_KEY"),
-    api_secret=config("CLOUDINARY_API_SECRET"),
+    cloud_name = config("CLOUDINARY_CLOUD_NAME"),
+    api_key = config("CLOUDINARY_API_KEY"),
+    api_secret = config("CLOUDINARY_API_SECRET"),
 )

@@ -8,6 +8,9 @@ class PhotoSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'url',
+            'width',
+            'height',
             'filename',
+            'format',
             'created_at'
         )
