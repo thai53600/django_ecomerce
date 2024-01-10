@@ -1,17 +1,19 @@
 from rest_framework import views
-from backend_ecommerce.helpers import custom_response, parse_request
-from .serializers import PhotoSerializer
-from .models import Photo
+from backend_ecommerce.helpers import custom_response
+from rest_framework.permissions import AllowAny
 import cloudinary
+from .models import Photo
+from .serializers import PhotoSerializer
 
 
 # Create your views here.
 class PhotoAPIView(views.APIView):
+    permission_classes = [AllowAny]
 
     def get(self, request):
+        
         try:
             photos = Photo.objects.all()
-            print('photos', photos)
             serializers = PhotoSerializer(photos, many=True)
             return custom_response('Get all photos successfully!', 'Success', serializers.data, 200)
         except:
@@ -39,10 +41,11 @@ class PhotoAPIView(views.APIView):
                 
                 return custom_response('Upload image successfully!', 'Success', serializer.data, 200)
             except  Exception as e:
-                print(e)
                 return custom_response('Upload image failed!', 'Error', str(e) , 400)
         
 class UploadMultipleImagesAPIView(views.APIView):
+    permission_classes = [AllowAny]
+    
     def post(self, request):
         if 'uploadImage' not in request.FILES:
             return custom_response('No upload resource', 'Error', 'No image file found in request', 400)
@@ -66,7 +69,6 @@ class UploadMultipleImagesAPIView(views.APIView):
                     serializer = PhotoSerializer(img_obj)
                     data.append(serializer.data)
                 except  Exception as e:
-                    print(e)
                     return custom_response('Upload image failed!', 'Error', str(e), 400)
                     
             return custom_response('Upload images successfully!', 'Success', data, 200)

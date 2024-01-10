@@ -1,7 +1,9 @@
 django
 djangorestframework
-pyyaml
-requests
+djangorestframework_simplejwt
 django-cors-headers
+djoser
+requests
 cloudinary
 python-decouple
+pyyaml

@@ -3,7 +3,7 @@
 Install django libraries <br />
 ```pip install -r requirement.txt```
 
-Create enviroment variables, follow by .env.example <br />
+Create enviroment variables (cloudinary), follow by .env.example <br />
 ```.env```
 
 Create migrations <br />
@@ -20,6 +20,20 @@ To run python shell <br />
 
 ## Available Route support GET, POST, PUT, DELETE
 ### prefix: /api/v1/
+
+Authentication and Authorization using djangorestframework_simplejwt<br />
+For more information: https://djoser.readthedocs.io/en/latest/getting_started.html
+
+Signup ```/users```<br />
+Login: ```/jwt/create/``` *(You will get access_token and refresh_token here)*<br />
+Refresh token: ```/jwt/refresh/```<br />
+Verify token: ```/jwt/verify/```<br />
+*Set authorization for required route: Authorization Bearer <access_token>*<br />
+*Currently, no authorization guard is turned on, but it will be enabled in the future.*
+
+```/users/me```<br />
+```/users/set_password/```<br />
+
 ```/category/```<br />
 ```/category/:id/```<br />
 
