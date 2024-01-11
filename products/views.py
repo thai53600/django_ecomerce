@@ -1,10 +1,13 @@
 from rest_framework import views
-from django.http import Http404
-from .serializers import CategorySerializer, ProductSerializer, ProductImageSerializer, ProductCommentSerializer
-from django.contrib.auth.models import User
-from .models import Category, Product, ProductImage, ProductComment
-from backend_ecommerce.helpers import custom_response, parse_request
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from django.http import Http404
+from django.contrib.auth import get_user_model
+from backend_ecommerce.helpers import custom_response, parse_request
+from .models import Category, Product, ProductImage, ProductComment
+from .serializers import CategorySerializer, ProductSerializer, ProductImageSerializer, ProductCommentSerializer
+
+# Import dynamic User model
+User = get_user_model()
 
 
 # Create your views here.
@@ -96,7 +99,7 @@ class ProductViewAPI(views.APIView):
             serializer = ProductSerializer(product)
             return custom_response('Create product successfully!', 'Success', serializer.data, 201)
         except Exception as e:
-            return custom_response('Create product failed', 'Error', { "error": str(e) }, 400)
+            return custom_response('Create product failed', 'Error', [str(e)], 400)
         
 
 class ProductDetailAPIView(views.APIView):
@@ -161,7 +164,7 @@ class ProductImageAPIView(views.APIView):
             serializer = ProductImageSerializer(product_image)
             return custom_response('Create product image successfully!', 'Success', serializer.data, 201)
         except Exception as e:
-            return custom_response('Create product image failed', 'Error', { "error": str(e) }, 400)
+            return custom_response('Create product image failed', 'Error', [str(e)], 400)
         
 
 class ProductImageDetailAPIView(views.APIView):
@@ -235,7 +238,7 @@ class ProductCommentAPIView(views.APIView):
             serializer = ProductCommentSerializer(product_comment)
             return custom_response('Create product comment successfully!', 'Success', serializer.data, 201)
         except Exception as e:
-            return custom_response('Create product comment failed', 'Error', { "error": str(e) }, 400)
+            return custom_response('Create product comment failed', 'Error', [str(e)], 400)
             
 class ProductCommentDetailAPIView(views.APIView):
     permission_classes = [AllowAny]

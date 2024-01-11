@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "decorations",
     "upload",
     "djoser",
+    "user",
 ]
 
 MIDDLEWARE = [
@@ -112,6 +113,8 @@ DATABASES = {
     }
         
 }
+
+AUTH_USER_MODEL = 'user.UserAccount'
 
 
 # Password validation

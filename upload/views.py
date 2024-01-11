@@ -17,7 +17,7 @@ class PhotoAPIView(views.APIView):
             serializers = PhotoSerializer(photos, many=True)
             return custom_response('Get all photos successfully!', 'Success', serializers.data, 200)
         except:
-            return custom_response('Get all photos failed!', 'Error', None, 400)
+            return custom_response('Get al  l photos failed!', 'Error', None, 400)
 
     def post(self, request):
         if 'uploadImage' not in request.FILES:
@@ -41,7 +41,7 @@ class PhotoAPIView(views.APIView):
                 
                 return custom_response('Upload image successfully!', 'Success', serializer.data, 200)
             except  Exception as e:
-                return custom_response('Upload image failed!', 'Error', str(e) , 400)
+                return custom_response('Upload image failed!', 'Error', [str(e)], 400)
         
 class UploadMultipleImagesAPIView(views.APIView):
     permission_classes = [AllowAny]
@@ -69,7 +69,7 @@ class UploadMultipleImagesAPIView(views.APIView):
                     serializer = PhotoSerializer(img_obj)
                     data.append(serializer.data)
                 except  Exception as e:
-                    return custom_response('Upload image failed!', 'Error', str(e), 400)
+                    return custom_response('Upload image failed!', 'Error', [str(e)], 400)
                     
             return custom_response('Upload images successfully!', 'Success', data, 200)
         

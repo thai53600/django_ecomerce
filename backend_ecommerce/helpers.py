@@ -6,6 +6,7 @@ from json import JSONDecodeError
 """Helper function to customize and standardize API responses"""
 def custom_response(message='', status='Success', data=None, status_code=200):
     response_dict = {
+        'status_code': status_code,
         'status': status,
         'message': message,
     }

@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from django.conf import settings
 
 
 # Create your models here.
@@ -55,7 +56,7 @@ class ProductComment(models.Model):
     rating = models.IntegerField(null=True)
     comment = models.CharField(max_length=512)
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments', null=False)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
     parent_id = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)

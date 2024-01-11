@@ -18,6 +18,12 @@ Start server <br />
 To run python shell <br />
 ```python manage.py shell```
 
+To truncate all tables <br />
+```python manage.py sqlflush```
+
+To reset database <br />
+```Delete db.sqlite3 -> make migrations -> migrate```
+
 ## Available Route support GET, POST, PUT, DELETE
 ### prefix: /api/v1/
 
