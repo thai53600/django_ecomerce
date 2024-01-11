@@ -1,5 +1,5 @@
 from rest_framework import views
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from django.http import Http404
 from django.contrib.auth import get_user_model
 from backend_ecommerce.helpers import custom_response, parse_request

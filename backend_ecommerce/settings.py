@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "upload",
     "djoser",
     "user",
+    "orders",
 ]
 
 MIDDLEWARE = [

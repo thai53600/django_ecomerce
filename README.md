@@ -52,6 +52,12 @@ Verify token: ```/jwt/verify/```<br />
 ```/upload-image/``` (only GET, POST)<br />
 ```/upload-multiple-image/``` (only POST)<br />
 
+```/order/```<br />
+```/order/:id/```<br />
+
+```/order/:order_id/detail/```<br />
+```/order/:order_id/detail/:id```<br />
+
 To enable upload image from POSTMAN: <br />
 *File -> Settings -> General -> Read files outside working directory OFF->ON*<br />
 
