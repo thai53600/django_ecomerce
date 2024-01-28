@@ -7,3 +7,7 @@ requests
 cloudinary
 python-decouple
 pyyaml
+psycopg2-binary
+dj-database-url
+drf-yasg
+gunicorn
