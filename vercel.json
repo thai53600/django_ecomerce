@@ -1,20 +1,18 @@
 {
-    "version": 2,
-    "builds": [
+  "builds": [{
+      "src": "backend_ecommerce/wsgi.py",
+      "use": "@vercel/python",
+      "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
+  },
+  {
+      "src": "build_files.sh",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "staticfiles_build" }
+  }],
+  "routes": [
       {
-        "src": "backend_ecommerce/wsgi.py",
-        "use": "@vercel/python",
-        "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
-      },
-      {
-        "src": "build_files.sh",
-        "use": "@vercel/static-build"
+          "src": "/(.*)",
+          "dest": "backend_ecommerce/wsgi.py"
       }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "backend_ecommerce/wsgi.py"
-      }
-    ]
-  }
+  ]
+}
