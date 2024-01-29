@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
@@ -9,7 +8,7 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="Eccommerce API",
+      title="Ecommerce API",
       default_version='v1',
       description="API description",
       terms_of_service="https://www.google.com/policies/terms/",
@@ -41,6 +40,5 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
 ]
-# + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += staticfiles_urlpatterns()

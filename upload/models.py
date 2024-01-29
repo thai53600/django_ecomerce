@@ -1,7 +1,6 @@
 from django.db import models
 
 
-# Create your models here.
 class Photo(models.Model):
     id = models.CharField(max_length=128, primary_key=True)
     url = models.CharField(max_length=255)

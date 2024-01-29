@@ -6,7 +6,6 @@ from .models import Photo
 from .serializers import PhotoSerializer
 
 
-# Create your views here.
 class PhotoAPIView(views.APIView):
     permission_classes = [AllowAny]
 

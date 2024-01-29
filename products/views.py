@@ -5,12 +5,9 @@ from django.contrib.auth import get_user_model
 from backend_ecommerce.helpers import custom_response, parse_request
 from .models import Category, Product, ProductImage, ProductComment
 from .serializers import CategorySerializer, ProductSerializer, ProductImageSerializer, ProductCommentSerializer
-
-# Import dynamic User model
 User = get_user_model()
 
 
-# Create your views here.
 class CategoryAPIView(views.APIView):
     permission_classes = [AllowAny]
 
