@@ -29,9 +29,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-8*(vo-je^i4!bx05@%jty&h%_hww+(k@x(akbiv!rq*hg0k_tf"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app', '*']
+ALLOWED_HOSTS = ['.vercel.app', 'http://localhost:5173', '127.0.0.1']
+CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
 
 # Application definition
 
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
     "user",
     "orders",
     "drf_yasg",
+    "paypal.standard.ipn"
 ]
 
 MIDDLEWARE = [
@@ -181,3 +183,9 @@ cloudinary.config(
     api_key=config("CLOUDINARY_API_KEY"),
     api_secret=config("CLOUDINARY_API_SECRET"),
 )
+
+# Paypal configs
+PAYPAL_TEST = True
+# Tài khoản nhận tiền
+PAYPAL_RECEIVER_EMAIL = config('PAYPAL_RECEIVER_EMAIL')
+

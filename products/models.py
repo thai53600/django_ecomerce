@@ -7,10 +7,10 @@ class Category(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     slug = models.CharField(max_length=255)
-    icon_url = models.CharField(max_length=128, null=True)
+    icon_url = models.CharField(max_length=128, null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(null=True, blank=True)
 
 
 class Product(models.Model):
@@ -25,7 +25,7 @@ class Product(models.Model):
     category_id = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products', null=False)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         ordering = ['created_at']
@@ -40,7 +40,7 @@ class ProductImage(models.Model):
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images', null=False)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(null=True, blank=True)
     
     class Meta:
         ordering = ['created_at']
@@ -58,7 +58,7 @@ class ProductComment(models.Model):
     parent_id = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(null=True, blank=True)
     
     class Meta:
         ordering = ['-created_at']
