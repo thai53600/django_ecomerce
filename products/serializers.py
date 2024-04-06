@@ -13,7 +13,8 @@ class ProductImageSerializer(serializers.ModelSerializer):
             'updated_at',
             'deleted_at'
         )
-        
+
+
 class ProductCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ProductComment
@@ -28,11 +29,12 @@ class ProductCommentSerializer(serializers.ModelSerializer):
             'updated_at',
             'deleted_at'
         )
-        
+
+
 class ProductSerializer(serializers.ModelSerializer):
     images = ProductImageSerializer(many=True, read_only=True)
     comments = ProductCommentSerializer(many=True, read_only=True)
-    
+
     class Meta:
         model = models.Product
         fields = (
@@ -51,9 +53,11 @@ class ProductSerializer(serializers.ModelSerializer):
             'updated_at',
             'deleted_at'
         )
-        
+
+
 class CategorySerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True, read_only=True)
+
     class Meta:
         model = models.Category
         fields = (

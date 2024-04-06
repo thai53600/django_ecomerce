@@ -71,4 +71,3 @@ class UploadMultipleImagesAPIView(views.APIView):
                     return custom_response('Upload image failed!', 'Error', [str(e)], 400)
                     
             return custom_response('Upload images successfully!', 'Success', data, 200)
-        

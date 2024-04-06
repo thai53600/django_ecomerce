@@ -150,7 +150,6 @@ class OrderCheckoutAPIView(views.APIView):
         try:
             order = Order.objects.get(id=order_id_slug)
             checkResult = order.checkValidOrder()
-            print('isValidOrder', checkResult)
             if not checkResult['status']:
                 return custom_response(
                     'Create payment transaction failed!',
@@ -189,8 +188,10 @@ class VerifyPaymentAPIView(views.APIView):
     def post(self, request, order_id_slug):
         try:
             data = parse_request(request)
+            order = Order.objects.get(id=data['order_id'])
+            if order.is_paid:
+                return custom_response('Your order has been paid!', 'Success', {}, 200)
             payment_status = verify_paypal_payment(payment_id=data['payment_id'])
-            print('payment_status', payment_status)
             # Giao dịch hợp lệ -> Chuyển trạng thái của Order
             if payment_status:
                 order = Order.objects.get(id=data['order_id'])
